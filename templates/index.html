@@ -1,24 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Tabla de órdenes</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
     <table>
         <thead>
-            <tr>
-                <th>ID de orden</th>
-                <th>Cantidad de productos con categoría "Lácteos"</th>
-            </tr>
+          <tr>
+            <th>ID</th>
+          </tr>
         </thead>
         <tbody>
-            {% for order in tabla_datos %}
-                <tr>
-                    <td>{{ order['id'] }}</td>
-                    <td>{{ order['lacteos_count'] }}</td>
-                </tr>
-            {% endfor %}
+          {% for order in orders %}
+          <tr>
+            <td>{{ order.orden }}</td>
+          </tr>
+          {% endfor %}
         </tbody>
-    </table>
+      </table>
 </body>
 </html>
