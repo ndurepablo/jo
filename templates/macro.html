@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Últimas órdenes de compra</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID de orden</th>
+                <th>Fecha de publicación</th>
+                <th>ID de usuario</th>
+                <th>Email de usuario</th>
+                <th>Login de usuario</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order, user in zip(orders, users) %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.post_date }}</td>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.login }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
