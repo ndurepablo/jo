@@ -2,7 +2,7 @@ import json
 import asyncio
 import aiohttp
 from datetime import datetime, timedelta
-
+from math import ceil
 
 from flask import Flask, flash, redirect, url_for, render_template, request
 from flask_mysqldb import MySQL
@@ -24,15 +24,19 @@ wcapi = API(
     version="wc/v3"
 )
 
-async def get_orders():
+async def get_orders(per_page, page):
     async with aiohttp.ClientSession() as session:
-        async with session.get('https://dev.jardinorganico.com.ar/wp-json/wc/v3/orders', params={"per_page": 10, "page": 1, "expand": "line_items.product"}, auth=aiohttp.BasicAuth('ck_5c5521a7554f61e1775a5821b9d0f46af4c71864', 'cs_ac0a59dbbfa06b42bf6ea7f311fb42a47495e5a3')) as response:
+        async with session.get('https://dev.jardinorganico.com.ar/wp-json/wc/v3/orders', params={"per_page": per_page, "page": page, "expand": "line_items.product"}, auth=aiohttp.BasicAuth('ck_5c5521a7554f61e1775a5821b9d0f46af4c71864', 'cs_ac0a59dbbfa06b42bf6ea7f311fb42a47495e5a3')) as response:
             return await response.json()
         
 @app.route('/', methods=['GET'])
 async def actualizar_ordenes():
+    page = int(request.args.get("page", 1))
+    per_page = 10
+
     # Esperar a que se completen las consultas
-    orders = await get_orders()
+    orders = await get_orders(per_page=per_page, page=page)
+    
 
     # Crear una lista de todos los ID de productos únicos
     product_ids = []
@@ -49,14 +53,27 @@ async def actualizar_ordenes():
     async with aiohttp.ClientSession() as session:
         async with session.get('https://dev.jardinorganico.com.ar/wp-json/wc/v3/products', params={"include": include}, auth=aiohttp.BasicAuth('ck_5c5521a7554f61e1775a5821b9d0f46af4c71864', 'cs_ac0a59dbbfa06b42bf6ea7f311fb42a47495e5a3')) as response:
             products = await response.json()
-        answers = []
+        orders_data = []
         for order in orders:
             lacteo_count = 0
             congelado_count = 0
             huerta_count = 0
             user_id = order["customer_id"]
             plano_numero = None
-            
+            found_delivery_date = False
+            found_delivery_time = False
+            for meta_data in order['meta_data']:
+                if meta_data['key'] == '_delivery_date':
+                    dia_entrega = meta_data['value']
+                    found_delivery_date = True
+                if meta_data['key'] == '_delivery_time':
+                    hora_entrega = meta_data['value']
+                    found_delivery_time = True
+            if not found_delivery_date:
+                dia_entrega = "sin dia entrega"
+            if not found_delivery_time:
+                hora_entrega = "sin hora entrega"
+
             for item in order["line_items"]:
                 product_id = item["product_id"]
                 for product in products:
@@ -82,9 +99,26 @@ async def actualizar_ordenes():
                         elif meta["key"] == "latitud":
                             latitud = meta["value"]
                     
-            answer = f"La orden {order['id']} tiene {lacteo_count} productos lácteos, {congelado_count} productos congelados y {huerta_count} productos de huerta. El usuario {user_id} tiene el número de plano {plano_numero}, la letra de plano {plano_letra}, longitud {longitud} y latitud {latitud}."
-            answers.append(answer)
-    return answers
+            order_data = {
+                'dia_entrega': dia_entrega,
+                'hora_entrega': hora_entrega,
+                'orden': order['id'],
+                'lacteos': lacteo_count,
+                'congelado': congelado_count,
+                'huerta': huerta_count,
+                'plano_numero': plano_numero,
+                'plano_letra': plano_letra,
+                'longitud': longitud,
+                'latitud': latitud,
+                'nombre': order['billing']['first_name'] + ' ' + order['billing']['last_name'],
+                'telefono': order['billing']['phone'],
+                'direccion': order['billing']['address_1'] + ' ' + order['billing']['address_2'],
+                'monto': order['total'],
+                'info_adicional': order['customer_note'],
+                'metodo_de_pago': order['payment_method_title'],
+            }
+            orders_data.append(order_data)
+    return render_template('index.html', orders = orders_data, page = page, per_page = per_page)
 
     # # Crear un diccionario que asocie cada ID de producto con su categoría correspondiente
     # product_categories = {}
