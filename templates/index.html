@@ -5,21 +5,100 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body {
+          background-color: #f2f2f2; /* gris claro */
+          font-family: Arial, sans-serif;
+          color: #333; /* gris oscuro */
+        }
+    
+        table {
+          border-collapse: collapse;
+          margin: 20px auto;
+        }
+    
+        th, td {
+          border: 1px solid #ccc;
+          padding: 8px;
+          text-align: center;
+        }
+    
+        th {
+          background-color: #ffa64d; /* naranja suave */
+          color: white;
+        }
+    
+        tbody tr:nth-child(even) {
+          background-color: #e6f2ff; /* verde agua claro */
+        }
+    
+        tbody tr:hover {
+          background-color: #d9d9d9; /* gris medio */
+        }
+    
+        a {
+          color: #ffa64d; /* naranja suave */
+          text-decoration: none;
+        }
+    
+        a:hover {
+          text-decoration: underline;
+        }
+      </style>
 </head>
 <body>
     <table>
         <thead>
           <tr>
-            <th>ID</th>
+            <th>dia_entrega</th>
+            <th>hora_entrega</th>
+            <th>orden</th>
+            <th>lacteos</th>
+            <th>congelado</th>
+            <th>huerta</th>
+            <th>plano_numero</th>
+            <th>plano_letra</th>
+            <th>longitud</th>
+            <th>latitud</th>
+            <th>nombre</th>
+            <th>telefono</th>
+            <th>direccion</th>
+            <th>monto</th>
+            <th>info_adicional</th>
+            <th>metodo_de_pago</th>
           </tr>
         </thead>
         <tbody>
           {% for order in orders %}
           <tr>
-            <td>{{ order.orden }}</td>
+            <td>{{ order.dia_entrega}}</td>
+            <td>{{ order.hora_entrega}}</td>
+            <td>{{ order.orden}}</td>
+            <td>{{ order.lacteos}}</td>
+            <td>{{ order.congelado}}</td>
+            <td>{{ order.huerta}}</td>
+            <td>{{ order.plano_numero}}</td>
+            <td>{{ order.plano_letra}}</td>
+            <td>{{ order.longitud}}</td>
+            <td>{{ order.latitud}}</td>
+            <td>{{ order.nombre}}</td>
+            <td>{{ order.telefono}}</td>
+            <td>{{ order.direccion}}</td>
+            <td>{{ order.monto}}</td>
+            <td>{{ order.info_adicional}}</td>
+            <td>{{ order.metodo_de_pago}}</td>
+
           </tr>
           {% endfor %}
         </tbody>
       </table>
+      <div>
+        {% if page > 1 %}
+          <a href="/?page={{ page - 1 }}">Anterior</a>
+        {% endif %}
+        {% if page <= 10 %}
+          <a href="/?page={{ page + 1 }}">Siguiente</a>
+        {% endif %}
+      </div>
 </body>
 </html>
