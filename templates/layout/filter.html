@@ -1,0 +1,103 @@
+<style>
+body {
+  background-color: #f2f2f2;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+form {
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0px;
+}
+
+label {
+  display: block;
+  margin: 10px 0;
+}
+
+input[type="date"] {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+  background-color: #e6f2ff;
+}
+
+input[type="submit"], button {
+  transition: all .5s;
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+input[type="submit"]:hover, button:hover {
+  background-color: #555555;
+}
+
+select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  background-color: white;
+  text-align-last: center;
+  margin-bottom: 10px;
+}
+
+option {
+  text-align: center;
+}
+.form-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+</style>
+<style type="text/css" media="print">
+  form, button
+  {
+      display: none;
+  }
+</style>
+<div class="form-container">
+  <form action="" method="GET">
+    <select id="dateType" name="dateType">
+      <option value="period" selected>Periodo de fechas</option>
+      <option value="delivery">Fecha de entrega</option>
+    </select>
+    <label for="after" id="afterLabel">Después de:</label>
+    <input type="date" id="after" name="after">
+    <label for="before" id="beforeLabel">Antes de:</label>
+    <input type="date" id="before" name="before">
+    <input type="submit" name="submit_button" value="ENVIAR">
+  </form>
+  <button onclick="window.print()">Imprimir</button>
+</div>
+
+
+<script>
+
+  const dateTypeSelect = document.getElementById('dateType');
+  const afterLabel = document.getElementById('afterLabel')
+  const beforeLabel = document.getElementById('beforeLabel');
+  const beforeInput = document.getElementById('before');
+
+  dateTypeSelect.addEventListener('change', () => {
+    if (dateTypeSelect.value === 'delivery') {
+      afterLabel.style.display = 'none'
+      beforeLabel.style.display = 'none';
+      beforeInput.style.display = 'none';
+    } else {
+      afterLabel.style.display = 'inline-block'
+      beforeLabel.style.display = 'inline-block';
+      beforeInput.style.display = 'inline-block';
+    }
+  });
+
+
+</script>

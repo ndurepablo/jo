@@ -1,0 +1,27 @@
+{% extends 'layout/layout.html' %}
+
+{% block title %} Tickets {% endblock %}
+
+{% include 'layout/filter.html' %}
+
+{% block stylesheet %} <link rel="stylesheet" href="../static/css/tickets.css"> {% endblock %} 
+{% block content %} 
+
+{% if orders %}
+<div class="parent-container" id="parent-container">
+    {% for order in orders %}
+        <div class="container">
+            <div class="ticket-head">
+                <h2>{{order.name}}</h2>
+                <p>{{order.id}}</p>
+            </div>
+            <p>{{order.delivery_date}}</p>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<script>
+
+  </script>
+{% endblock %}

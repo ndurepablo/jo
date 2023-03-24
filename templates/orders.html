@@ -1,0 +1,99 @@
+{% extends 'layout/layout.html' %}
+
+{% block title %} Index {% endblock %}
+
+{% include 'layout/filter.html' %}
+
+{% block content %} 
+<style>
+  body {
+    background-color: #f2f2f2; /* gris claro */
+    font-family: Arial, sans-serif;
+    color: #333; /* gris oscuro */
+  }
+
+  table {
+    border-collapse: collapse;
+    margin: 20px auto;
+  }
+
+  th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    background-color: #ffa64d; /* naranja suave */
+    color: white;
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: #e6f2ff; /* verde agua claro */
+  }
+
+  tbody tr:hover {
+    background-color: #d9d9d9; /* gris medio */
+  }
+
+  a {
+    color: #ffa64d; /* naranja suave */
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+</style>
+<table>
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Fecha de entrega</th>
+        <th>Hora de entrega</th>
+        <th>Lácteos</th>
+        <th>Congelados</th>
+        <th>Huerta</th>
+        <th>Plano número</th>
+        <th>Plano letra</th>
+        <th>Latitud</th>
+        <th>Longitud</th>
+        <th>Nombre</th>
+        <th>Dirección</th>
+        <th>Ciudad</th>
+        <th>Código postal</th>
+        <th>Teléfono</th>
+        <th>Total</th>
+        <th>Notas de cliente</th>
+        <th>Método de pago</th>
+      </tr>
+    </thead>
+    <tbody>
+{% if orders %}
+      {% for order in orders %}
+      <tr>
+        <td>{{ order.id}}</td>
+        <td>{{ order.delivery_date}}</td>
+        <td>{{ order.delivery_time}}</td>
+        <td>{{ order.lacteos_counter}}</td>
+        <td>{{ order.freezer_counter}}</td>
+        <td>{{ order.huerta}}</td>
+        <td>{{ order.plano_numero}}</td>
+        <td>{{ order.plano_letra}}</td>
+        <td>{{ order.latitud}}</td>
+        <td>{{ order.longitud}}</td>
+        <td>{{ order.name}}</td>
+        <td>{{ order.adress}}</td>
+        <td>{{ order.city}}</td>
+        <td>{{ order.cp}}</td>
+        <td>{{ order.phone}}</td>
+        <td>{{ order.total}}</td>
+        <td>{{ order.notes}}</td>
+        <td>{{ order.payment_method}}</td>
+      </tr>
+      {% endfor %}
+{% endif %}
+    </tbody>
+  </table>
+
+{% endblock %}

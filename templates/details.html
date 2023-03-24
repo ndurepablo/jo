@@ -1,0 +1,109 @@
+{% extends 'layout/layout.html' %}
+
+{% block title %} Tickets {% endblock %}
+
+{% include 'layout/filter.html' %}
+
+{% block stylesheet %} {% endblock %} 
+{% block content %} 
+<style>
+    .header-detail{
+        display: flex;
+        justify-content: space-evenly;
+    }
+    .shipping-section{
+        display: flex;
+        justify-content: space-around;
+        border-top: 1px dashed;
+        border-bottom: 1px dashed;
+    }
+    .order{
+        display: flex;
+        align-items: center;
+    }
+    .order-general{
+        display: flex;
+        justify-content: space-around;
+    }
+    table{
+        width: 100%;    
+        margin-bottom: 10px;
+        margin-top: 10px;
+
+    }
+
+    .table-container{
+        margin-bottom: 100px;
+        border: 1px solid;
+    }
+</style>
+
+{% if orders %}
+{% set counter = 0 %}
+{% for order in orders %}
+<div class="table-container">
+    <table > 
+        <tr>
+          <td width="50%" align="center">DETALLE DE ENVÍO: {{order.delivery_date}}</td>
+          <td width="50%" align="center"><img src="../static/img/jardin-organico.png" alt=""></td>
+        </tr>
+      </table>
+      <table border="1"> 
+        <tr>
+          <td width="33%" align="center">
+            <p>{{order.name}} {{order.adress}}</p>
+            <p>{{order.city}} {{order.cp}}</p>
+        </td>
+          <td width="33%" align="center">ORDEN: {{order.id}}</td>
+        </tr>
+      </table>
+      <table > 
+        <tr>
+          <td width="50%" align="center">
+            <h4>COMENTARIOS:</h4>
+            <p>{{order.notes}}</p>
+          </td>
+          <td width="50%" align="center">
+            <p>Precio del pedido: {{order.total}}</p>
+          </td>
+        </tr>
+      </table>
+      <table > 
+        <tr>
+          <td width="33%" align="center">
+            <p>Envío: {{order.shipping_total}}</p>
+          </td>
+          <td width="33%" align="center">
+            <p>Total:</p>
+            <p>{{order.total}}</p>
+          </td>
+        </tr>
+      </table>
+      <table > 
+        <tr>
+          <td width="33%" align="center">Cantidad de productos:</td>
+          <td width="33%" align="center">{{order.total_products}}</td>
+          <td width="33%" align="center"></td>
+        </tr>
+      </table>
+      <table > 
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Importe</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td width="33%" align="center">{{ order.products[counter]['name'] }}</td>
+                <td width="33%" align="center">{{ order.products[counter]['quantity'] }}</td>
+              <td width="33%" align="center">{{ order.products[counter]['total_product'] }}</td>
+            </tr>
+                {% set counter = counter + 1 %}
+        </tbody>
+      </table>
+</div>
+{% endfor %}
+{% endif%}
+{% endblock %}

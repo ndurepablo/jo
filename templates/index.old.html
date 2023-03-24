@@ -47,6 +47,14 @@
       </style>
 </head>
 <body>
+  <form action="/" method="GET">
+    <label for="after">Después de:</label>
+    <input type="date" id="after" name="after">
+    <label for="before">Antes de:</label>
+    <input type="date" id="before" name="before">
+    <button type="submit">Buscar</button>
+  </form>
+
     <table>
         <thead>
           <tr>
@@ -92,13 +100,22 @@
           {% endfor %}
         </tbody>
       </table>
+      {% if total_pages > 1 %}
       <div>
         {% if page > 1 %}
           <a href="/?page={{ page - 1 }}">Anterior</a>
         {% endif %}
-        {% if page <= 10 %}
+        {% for page_num in range(1, total_pages + 1) %}
+          {% if page_num == page %}
+            <span>{{ page_num }}</span>
+          {% else %}
+            <a href="/?page={{ page_num }}">{{ page_num }}</a>
+          {% endif %}
+        {% endfor %}
+        {% if page < total_pages %}
           <a href="/?page={{ page + 1 }}">Siguiente</a>
         {% endif %}
       </div>
+    {% endif %}
 </body>
 </html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Productos Lácteos</title>
+</head>
+<body>
+    <h1>Productos Lácteos</h1>
+    <ul>
+        {% for product in products %}
+            <li>{{ product.name }} - {{ product.price }} - Cantidad: {{ product.quantity }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
