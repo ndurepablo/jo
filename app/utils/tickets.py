@@ -11,11 +11,11 @@ def get_tickets(date_type, page = 10,after = None, before = None):
     elif date_type == 'delivery':
         if after:
             params["delivery_date"] = after
-    
+
     orders = get_data(endpoint="orders", params=params)
-    
+
     total_pages = orders['total_pages']
-    
+
     orders_response = orders['response']
     orders_data = []
     for key in orders_response:
@@ -27,4 +27,3 @@ def get_tickets(date_type, page = 10,after = None, before = None):
         }
         orders_data.append(order_data)
     return orders_data, total_pages
-    
