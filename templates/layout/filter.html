@@ -66,15 +66,10 @@ option {
 </style>
 <div class="form-container">
   <form action="" method="GET">
-    <select id="dateType" name="dateType">
-      <option value="period" selected>Periodo de fechas</option>
-      <option value="delivery">Fecha de entrega</option>
-    </select>
-    <label for="after" id="afterLabel">Después de:</label>
-    <input type="date" id="after" name="after">
-    <label for="before" id="beforeLabel">Antes de:</label>
-    <input type="date" id="before" name="before">
-    <input type="submit" name="submit_button" value="ENVIAR">
+      {% block select_filter %}{% endblock %}
+      <label for="after" id="afterLabel">Fecha de entrega</label>
+      <input type="date" id="after" name="after">
+      <input type="submit" name="submit_button" value="ENVIAR">
   </form>
   <button onclick="window.print()">Imprimir</button>
   <button onclick="ExportToExcel('xlsx')">Export table to excel</button>

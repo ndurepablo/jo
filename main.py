@@ -2,11 +2,7 @@ from datetime import datetime
 
 from flask import Flask, flash, redirect, url_for, render_template, request
 
-from app.utils.api_client import get_data
-from app.utils.orders import get_orders
-from app.utils.tickets import get_tickets
-from app.utils.details import get_details
-from app.utils.category import get_category
+from app.utils.service import get_category, get_details, get_orders, get_tickets
 
 
 app = Flask(__name__)
@@ -27,18 +23,8 @@ def orders_completed():
     delivery_date = None
 
     if submit_button == 'ENVIAR':
-        if dateType == 'period':
-            if after:
-                after = datetime.strptime(after, '%Y-%m-%d').date()
-            if before:
-                before = datetime.strptime(before, '%Y-%m-%d').date()
-            orders, total_pages = get_orders(date_type='period', after=after, before=before, page=page)
-        elif dateType == 'delivery':
-            if after:
-                parts = after.split('-')
-                delivery_date = f'{parts[2]}/{parts[1]}/{parts[0]}'
-
-            orders, total_pages = get_orders(date_type='delivery', after=delivery_date, page=page)
+        if after:
+            orders, total_pages = get_orders(date_type='delivery', after=delivery_date)
 
     return render_template('orders.html', orders = orders, total_pages = total_pages, page = page)
 
@@ -57,19 +43,8 @@ def tickets_delivery():
     delivery_date = None
 
     if submit_button == 'ENVIAR':
-        if dateType == 'period':
-            if after:
-                after = datetime.strptime(after, '%Y-%m-%d').date()
-            if before:
-                before = datetime.strptime(before, '%Y-%m-%d').date()
-            orders, total_pages = get_tickets(date_type='period', after=after, before=before)
-        elif dateType == 'delivery':
-            if after:
-                parts = after.split('-')
-                delivery_date = f'{parts[2]}/{parts[1]}/{parts[0]}'
-
-            orders, total_pages = get_tickets(date_type='delivery', after=delivery_date)
-
+        if after:
+            orders, total_pages = get_details(date_type='delivery', after=delivery_date)
 
     return render_template('tickets.html', orders=orders, total_pages=total_pages)
 
@@ -87,23 +62,14 @@ def orders_details():
     delivery_date = None
 
     if submit_button == 'ENVIAR':
-        if dateType == 'period':
-            if after:
-                after = datetime.strptime(after, '%Y-%m-%d').date()
-            if before:
-                before = datetime.strptime(before, '%Y-%m-%d').date()
-            orders, total_pages = get_details(date_type='period', after=after, before=before)
-        elif dateType == 'delivery':
-            if after:
-                parts = after.split('-')
-                delivery_date = f'{parts[2]}/{parts[1]}/{parts[0]}'
-
-            orders, total_pages = get_details(date_type='delivery', after=delivery_date) 
+        if after:
+            orders, total_pages = get_details(date_type='delivery', after=delivery_date)
 
     return render_template('details.html', orders=orders)
 
 @app.route('/category/')
 def category():
+    category = request.args.get('category')
     after = request.args.get('after')
     before = request.args.get('before')
     submit_button = request.args.get('submit_button')
@@ -115,23 +81,12 @@ def category():
     delivery_date = None
 
     if submit_button == 'ENVIAR':
-        if dateType == 'period':
-            if after:
-                after = datetime.strptime(after, '%Y-%m-%d').date()
-            if before:
-                before = datetime.strptime(before, '%Y-%m-%d').date()
-            orders, total_pages = get_category(date_type='period', after=after, before=before)
-        elif dateType == 'delivery':
-            if after:
-                parts = after.split('-')
-                delivery_date = f'{parts[2]}/{parts[1]}/{parts[0]}'
-
-            orders, total_pages = get_category(date_type='delivery', after=delivery_date)
-        # Procesa los datos para la tabla
-        table_data = []
-
-        if orders:
-            headers = set()  # Usaremos un conjunto para recopilar todos los nombres de usuario únicos
+        if after:
+            orders, total_pages = get_category(date_type='period', after=after, before=before, category=category)
+    # Procesa los datos para la tabla
+    table_data = []
+    headers = set() # Usaremos un conjunto para recopilar todos los nombres de usuario únicos
+    if orders:
             for order in orders:
                 product_name = order['name']
                 total_quantity = order['total_quantity']
