@@ -1,14 +1,17 @@
-version: "3.9"
+version: "3"
+
 services:
   web:
-    build: 
-      context: .
-      dockerfile: dockerfile.dev
-    ports: 
-      - "5000:5000"
+    build: .
+    ports:
+      - "8000:8000"  # Puerto donde gunicorn servirá la aplicación
+#    restart: always
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"  # Puerto donde Nginx escuchará las solicitudes
     volumes:
-      - .:/app
-
-
-
-
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro  # Archivo de configuración de Nginx
+    depends_on:
+      - web

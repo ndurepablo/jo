@@ -6,7 +6,9 @@ from app.utils.service import get_category, get_details, get_orders, get_tickets
 
 
 app = Flask(__name__)
-
+# Configuración para deshabilitar el modo de depuración
+app.config['ENV'] = 'production'
+app.config['DEBUG'] = False
 
 @app.route('/orders/', methods=['GET', 'POST'])
 def orders_completed():
@@ -24,7 +26,7 @@ def orders_completed():
 
     if submit_button == 'ENVIAR':
         if after:
-            orders, total_pages = get_orders(date_type='delivery', after=delivery_date)
+            orders, total_pages = get_orders(date_type='delivery', after=after)
 
     return render_template('orders.html', orders = orders, total_pages = total_pages, page = page)
 
@@ -44,7 +46,7 @@ def tickets_delivery():
 
     if submit_button == 'ENVIAR':
         if after:
-            orders, total_pages = get_details(date_type='delivery', after=delivery_date)
+            orders, total_pages = get_details(date_type='delivery', after=after)
 
     return render_template('tickets.html', orders=orders, total_pages=total_pages)
 
@@ -63,7 +65,7 @@ def orders_details():
 
     if submit_button == 'ENVIAR':
         if after:
-            orders, total_pages = get_details(date_type='delivery', after=delivery_date)
+            orders, total_pages = get_details(date_type='delivery', after=after)
 
     return render_template('details.html', orders=orders)
 

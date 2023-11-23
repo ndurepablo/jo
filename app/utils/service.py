@@ -63,12 +63,13 @@ def get_orders(date_type, page = 10,after = None, before = None):
     params = {}
     if after:
         params["delivery_date"] = format_date(after)
-
     orders = get_data(endpoint="orders", params=params)
     total_pages = orders['total_pages']
 
     orders_response = orders['response']
+    print(orders_response)
     orders_data = []
+
     for key in orders_response:
         lacteos = key['category_counter']['lacteos'] if 'lacteos' in key['category_counter'] else 0
         freezer = key['category_counter']['congelado'] if 'congelado' in key['category_counter'] else 0

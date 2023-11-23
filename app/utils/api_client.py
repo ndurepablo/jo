@@ -1,15 +1,24 @@
 import json
+import os
 
 from woocommerce import API
 
-def get_data_category(per_page: int = 10, endpoint: str = None, params: dict = None, after = None, before = None):
+from dotenv import load_dotenv
+
+load_dotenv()
+
+def get_wcapi():
     # Configuración de la API de WooCommerce
-    wcapi = API(
-        url="http://127.0.0.1",
-        consumer_key="ck_0a0e9da8255301519bf6b0f664025509804fb1f8",
-        consumer_secret="cs_59994bef4d81f92aeac617c32cdabae475534ed6",
-        version="wc/v3"
+    return API(
+        url=os.getenv("BASE_URL"),
+        consumer_key=os.getenv("CONSUMER_KEY"),
+        consumer_secret=os.getenv("CONSUMER_SECRET"),
+        version=os.getenv("VERSION_API")
     )
+
+
+def get_data_category(per_page: int = 10, endpoint: str = None, params: dict = None, after = None, before = None):
+    wcapi = get_wcapi()
     # Realiza la solicitud a la API de WooCommerce
     response = wcapi.get(endpoint, params=params)
     # Inicializa un diccionario vacío como valor predeterminado
@@ -40,13 +49,7 @@ def get_data_category(per_page: int = 10, endpoint: str = None, params: dict = N
     return data
 
 def get_data(per_page: int = 10, endpoint: str = None, params: dict = None, after = None, before = None):
-    # Configuración de la API de WooCommerce
-    wcapi = API(
-        url="http://127.0.0.1",
-        consumer_key="ck_0a0e9da8255301519bf6b0f664025509804fb1f8",
-        consumer_secret="cs_59994bef4d81f92aeac617c32cdabae475534ed6",
-        version="wc/v3"
-    )
+    wcapi = get_wcapi()
     # Realiza la solicitud a la API de WooCommerce
     response = wcapi.get(endpoint, params=params)
     # Obtiene la información de paginación
