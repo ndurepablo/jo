@@ -4,14 +4,14 @@ services:
   web:
     build: .
     ports:
-      - "8000:8000"  # Puerto donde gunicorn servirá la aplicación
-#    restart: always
+      - "8000:8000"
+    # restart: always
 
   nginx:
     image: nginx:latest
     ports:
-      - "80:80"  # Puerto donde Nginx escuchará las solicitudes
+      - "80:80"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro  # Archivo de configuración de Nginx
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - web

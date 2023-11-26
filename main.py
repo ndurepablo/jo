@@ -1,3 +1,7 @@
+import os
+
+from dotenv import load_dotenv
+
 from functools import wraps
 
 from flask import Flask, render_template, request, redirect, url_for, flash, session, g
@@ -6,13 +10,15 @@ import jinja2.exceptions
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 
+
 from app.utils.service import get_category, get_details, get_orders, get_tickets
 
+load_dotenv()
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'your_secret_key'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
@@ -31,7 +37,7 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-# @app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         username = request.form['username']
