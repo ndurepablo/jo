@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %} Detalles {% endblock %}
+
+{% block stylesheet %} {% endblock %}
+{% block content %}
+{% include 'layout/filter.html' %}
+{% include 'base_details.html' %}
+
+{% if orders %}
+
+<div class="details-container row mb-4 ml-4 justify-content-center">
+  {% set counter = 0 %}
+  {% for order in orders %}
+  <div class="table-container col-md-5 mb-4 mr-md-5">
+    <div class="ritz grid-container" dir="ltr">
+      <table class="waffle border border-dark" cellspacing="0" cellpadding="0">
+          <tbody>
+              <tr style="height: 20px">
+                  <th id="0R0" style="height: 20px;" class="row-headers-background">
+                  </th>
+                  <td class="s0"></td>
+                  <td class="s0"></td>
+                  <td class="s0"></td>
+              </tr>
+              <tr style="height: 20px">
+                  <th id="0R1" style="height: 20px;" class="row-headers-background">
+                  </th>
+                  <td class="s1 softmerge">
+                      <div class="softmerge-inner" style="width:409px;left:-1px">DETALLE DEL ENVÍO {{order.custom_shipping_date}}</div>
+                  </td>
+                  <td class="s2"></td>
+                  <td class="s3"><img src="../static/img/jardin-organico.png" alt=""></td>
+              </tr>
+              <tr style="height: 20px">
+                  <th id="0R2" style="height: 20px;" class="row-headers-background">
+                  </th>
+                  <td class="s4 softmerge">
+                      <div class="softmerge-inner" style="width:97px;left:-1px">{{order.name}} (NUMERO TEL)</div>
+                  </td>
+                  <td class="s5" colspan="2">ORDEN #{{order.id}}</td>
+              </tr>
+              <tr style="height: 20px">
+                  <th id="0R3" style="height: 20px;" class="row-headers-background">
+                  </th>
+                  <td class="s6 softmerge">
+                      <div class="softmerge-inner" style="width:409px;left:-1px">{{order.adress}} / BARRIO / {{order.city}} {{order.cp}}</div>
+                  </td>
+                  <td class="s2"></td>
+                  <td class="s3"></td>
+              </tr>
+              <tr style="height: 20px">
+                  <th id="0R4" style="height: 20px;" class="row-headers-background">
+                  </th>
+                  <td class="s0"></td>
+                  <td class="s0"></td>
+                  <td class="s7">Precio del pedido: ${{order.total}} (traer orden)</td>
+              </tr>
+              <tr style="height: 20px">
+                  <th id="0R5" style="height: 20px;" class="row-headers-background">
+                  </th>
+                  <td class="s0"></td>
+                  <td class="s0"></td>
+                  <td class="s7">Envío: ${{order.shipping_total}}</td>
+              </tr>
+              <tr style="height: 20px">
+                  <th id="0R6" style="height: 20px;" class="row-headers-background">
+                  </th>
+                  <td class="s8 softmerge">
+                      <div class="softmerge-inner" style="width:198px;left:-1px">COMENTARIOS: {{ order.notes if order.notes else 'sin comentarios' }}</div>
+                  </td>
+                  <td class="s9"></td>
+                  <td class="s10">Total: ${{order.total}}</td>
+              </tr>
+              <tr style="height: 20px">
+                  <th id="" style="height: 20px;" class="row-headers-background">
+                  </th>
+                  <td class="s11" colspan="3">Abona por transferencia</td>
+              </tr>
+              <tr style="height: 20px">
+                  <th id="" style="height: 20px;" class="row-headers-background">
+                  </th>
+                  <td class="s12 softmerge">
+                      <div class="softmerge-inner" style="width:15px;left:-61px">Cantidad de productos:</div>
+                  </td>
+                  <td class="s13">{{order.total_products}}</td>
+                  <td class="s0"></td>
+              </tr>
+              <tr style="height: 20px">
+                  <th id="0R9" style="height: 20px;" class="row-headers-background">
+                  </th>
+                  <td class="s14">Producto </td>
+                  <td class="s15">Cantidad </td>
+                  <td class="s16">Importe</td>
+              </tr>
+              {% for product in order.products %}
+              <tr style="height: 20px">
+                  <th id="0R10" style="height: 20px;" class="row-headers-background">
+                  </th>
+                  <td class="s17 softmerge">
+                      <div class="softmerge-inner" style="width:97px;left:-1px">{{ product['name'] }}</div>
+                  </td>
+                  <td class="s18">{{ product['quantity'] }}</td>
+                  <td class="s19">{{ product['total_product'] }}</td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+    </div>
+  </div>
+{% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

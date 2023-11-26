@@ -1,97 +1,83 @@
 <style>
-body {
-  background-color: #f2f2f2;
-  font-family: Arial, sans-serif;
-  color: #333;
-}
-
-form {
-  margin: 20px auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 0px;
-}
-
-label {
-  display: block;
-  margin: 10px 0;
-}
-
-input[type="date"] {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: center;
-  background-color: #e6f2ff;
-}
-
-input[type="submit"], button {
-  transition: all .5s;
-  background-color: #333;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  margin: 10px;
-}
-
-input[type="submit"]:hover, button:hover {
-  background-color: #555555;
-}
-
-select {
-  padding: 8px;
-  border: 1px solid #ccc;
-  background-color: white;
-  text-align-last: center;
-  margin-bottom: 10px;
-}
-
-option {
-  text-align: center;
-}
-.form-container{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
+  /* Oculta todos los elementos excepto el contenedor que deseas imprimir */
 </style>
-<style type="text/css" media="print">
-  form, button
-  {
-      display: none;
-  }
-</style>
-<div class="form-container">
-  <form action="" method="GET">
+<div class="row justify-content-center">
+  <div class="filter-div">
+    <form action="" method="GET">
       {% block select_filter %}{% endblock %}
       <label for="after" id="afterLabel">Fecha de entrega</label>
-      <input type="date" id="after" name="after">
-      <input type="submit" name="submit_button" value="ENVIAR">
+      <input class="form-control form-control-sm mt-1" type="date" id="after" name="after">
+      <input class="btn btn-block btn-primary mt-1" type="submit" name="submit_button" value="Buscar">
   </form>
-  <button onclick="window.print()">Imprimir</button>
-  <button onclick="ExportToExcel('xlsx')">Export table to excel</button>
-</div>
-
+  <link rel="stylesheet" href="../../static/css/sb-admin-2.min.css">
+  <button class="btn btn-secondary mt-1 mb-3" onclick="ExportToExcel('xlsx')">Exportar</button>
+  <button id="printBtn" class="btn btn-secondary mt-1 mb-3" onclick="printContent()">Imprimir</button>
+  </div>
 <script>
+  function printContent() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const date = urlParams.get('after');
 
-  const dateTypeSelect = document.getElementById('dateType');
-  const afterLabel = document.getElementById('afterLabel')
-  const beforeLabel = document.getElementById('beforeLabel');
-  const beforeInput = document.getElementById('before');
+    const styles1 = document.createElement('link');
+    styles1.rel = 'stylesheet';
+    styles1.href = '../../static/css/details.css';
+  
+    const styles2 = document.createElement('link');
+    styles2.rel = 'stylesheet';
+    styles2.href = '../../static/vendor/fontawesome-free/css/all.min.css';
+  
+    const styles3 = document.createElement('link');
+    styles3.rel = 'stylesheet';
+    styles3.href = '../../static/css/sb-admin-2.min.css';
+  
+    styles1.onload = function() {
+      styles2.onload = function() {
+        const contenidoImprimir = document.querySelector('.details-container');
+        const contenidoParaImprimir = contenidoImprimir.cloneNode(true);
+        const tempDiv = document.createElement('div');
+        tempDiv.appendChild(contenidoParaImprimir);
+  
+        const ventanaImpresion = window.open('', '_blank');
+        const ventanaDocument = ventanaImpresion.document;
+  
+        // Agregar estilos para la impresión en paisaje
+        const stylePrint = document.createElement('style');
+        stylePrint.setAttribute('type', 'text/css');
+        stylePrint.setAttribute('media', 'print');
+        stylePrint.textContent = '@page { size: landscape; }';
+        ventanaDocument.head.appendChild(stylePrint); // Agregar estilos para la impresión en paisaje
+  
+        ventanaDocument.head.innerHTML = '<title>Sin titulo</title>'; // Agrega un título opcional
+        ventanaDocument.head.appendChild(styles1); // Agregar los estilos al head
+        ventanaDocument.head.appendChild(styles2); // Agregar los estilos al head
+        ventanaDocument.head.appendChild(styles3); // Agregar los estilos al head
+  
+        ventanaDocument.body.innerHTML = tempDiv.innerHTML; // Escribir el contenido en el body
+  
+        // Esperar un corto tiempo antes de imprimir para asegurarse de que los estilos se apliquen
+        //setTimeout(() => {
+          //ventanaImpresion.print();
+          //ventanaImpresion.close();
+        //}, 500); // Tiempo de espera (puedes ajustarlo según sea necesario)
+      };
+  
+      document.head.appendChild(styles2); // Agregar los estilos al head para cargarlos
+    };
+  
+    document.head.appendChild(styles1); // Agregar los estilos al head para cargarlos
+  }
+  
+  
+  
+  
 
-  dateTypeSelect.addEventListener('change', () => {
-    if (dateTypeSelect.value === 'delivery') {
-      afterLabel.style.display = 'none'
-      beforeLabel.style.display = 'none';
-      beforeInput.style.display = 'none';
-    } else {
-      afterLabel.style.display = 'inline-block'
-      beforeLabel.style.display = 'inline-block';
-      beforeInput.style.display = 'inline-block';
-    }
-  });
-
+  function ExportToExcel(type, fn, dl) {
+      var elt = document.getElementById('dataTable');
+      var wb = XLSX.utils.table_to_book(elt, { sheet: "Pedidos" });
+      return dl ?
+        XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
+        XLSX.writeFile(wb, fn || ('Pedidos.' + (type || 'xlsx')));
+   }
 </script>
+
+</div>

@@ -33,8 +33,7 @@ def get_details(date_type, page = 10,after = None, before = None):
         billing = key['billing']
         order_data = {
             'id': key['id'],
-            'delivery_date': key['delivery_date'],
-            'delivery_time': key['delivery_time'],
+            'custom_shipping_date': key['custom_shipping_date'],
             'name': billing['first_name'] + billing['last_name'],
             'adress': billing['address_1'] + billing['address_2'],
             'city': billing['city'],
@@ -45,6 +44,7 @@ def get_details(date_type, page = 10,after = None, before = None):
             'payment_method': key['payment_method_title'],
             'shipping_total': key['shipping_total']
         }
+        total_products = 0
         for product in key['line_items']:
             total_quantity = 0
             total_quantity += product['quantity']
@@ -55,8 +55,9 @@ def get_details(date_type, page = 10,after = None, before = None):
             }
             products_data.append(product_data)
             order_data['products'] = products_data
-            order_data['total_products'] = total_quantity
+            total_products += total_quantity
         orders_data.append(order_data)
+        order_data['total_products'] = total_products
     return orders_data, total_pages
 
 def get_orders(date_type, page = 10,after = None, before = None):

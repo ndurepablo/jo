@@ -1,71 +1,62 @@
-{% extends 'layout/layout.html' %}
-
-{% block title %} Index {% endblock %}
-
-{% include 'layout/filter_category.html' %}
+{% extends "base.html" %} {% block title %}Categorias{% endblock %}
 {% block content %}
-<style>
-  body {
-    background-color: #f2f2f2; /* gris claro */
-    font-family: Arial, sans-serif;
-    color: #333; /* gris oscuro */
-  }
 
-  table {
-    border-collapse: collapse;
-    margin: 20px auto;
-  }
+<!-- Begin Page Content -->
+<div class="container-fluid">
 
-  th, td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: center;
-  }
+  <!-- Page Heading -->
+  <h1 class="h3 mb-2 text-gray-800">Tablas</h1>
+  <p class="mb-4">En esta sección se obtienen los resultados a partir de una busqueda por fecha de entrega para exportar en formato xlsx.</p>
+  {% include 'layout/filter_category.html' %}
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Listado de resultados</h6>
+    </div>
+    <div class="card-body">
 
-  th {
-    background-color: #ffa64d; /* naranja suave */
-    color: white;
-  }
-
-  tbody tr:nth-child(even) {
-    background-color: #e6f2ff; /* verde agua claro */
-  }
-
-  tbody tr:hover {
-    background-color: #d9d9d9; /* gris medio */
-  }
-
-  a {
-    color: #ffa64d; /* naranja suave */
-    text-decoration: none;
-  }
-
-  a:hover {
-    text-decoration: underline;
-  }
-</style>
-
-<table>
-    <thead>
-        <tr>
-            <th>Producto</th>
-            <th>Total</th>
-            {% for header in headers %}
-            <th>{{ header }}</th>
+      <div class="table-responsive" id="tbl_exporttable_to_xls">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Total</th>
+              {% for header in headers %}
+              <th>{{ header }}</th>
+              {% endfor %}
+          </tr>
+          </thead>
+          <tbody>
+            {% for row in table_data %}
+            <tr>
+                <td>{{ row.product_name }}</td>
+                <td>{{ row.total_quantity }}</td>
+                {% for header in headers %}
+                <td>{{ row[header] }}</td>
+                {% endfor %}
+            </tr>
             {% endfor %}
-        </tr>
-    </thead>
-    <tbody>
-        {% for row in table_data %}
-        <tr>
-            <td>{{ row.product_name }}</td>
-            <td>{{ row.total_quantity }}</td>
-            {% for header in headers %}
-            <td>{{ row[header] }}</td>
-            {% endfor %}
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+
+</div>
+<!-- End of Main Content -->
 
 {% endblock %}
+
+{% block js %}
+{{ super() }}
+<!-- Page level plugins -->
+<script src="{{ url_for('static', filename='vendor/datatables/jquery.dataTables.min.js')}}"></script>
+<script src="{{ url_for('static', filename='vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{{ url_for('static', filename='js/demo/datatables-demo.js')}}"></script>
+{% endblock %}
+

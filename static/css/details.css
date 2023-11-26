@@ -1,0 +1,318 @@
+
+    .ritz .waffle a {
+        color: inherit;
+    }
+
+    .ritz .waffle .s7 {
+        background-color: #ffffff;
+        text-align: left;
+        color: #000000;
+        font-family: 'docs-Helvetica Neue', Arial;
+        font-size: 10pt;
+        vertical-align: bottom;
+        white-space: nowrap;
+        direction: ltr;
+        padding: 2px 3px 2px 3px;
+    }
+
+    .ritz .waffle .s19 {
+        background-color: #ffffff;
+        text-align: right;
+        color: #000000;
+        font-family: 'docs-Helvetica Neue', Arial;
+        font-size: 10pt;
+        vertical-align: bottom;
+        white-space: nowrap;
+        direction: ltr;
+        padding: 2px 3px 2px 3px;
+    }
+
+    .ritz .waffle .s2 {
+        border-left: none;
+        border-right: none;
+        border-bottom: 2px SOLID #000000;
+        background-color: #ffffff;
+        text-align: left;
+        color: #000000;
+        font-family: 'docs-Calibri', Arial;
+        font-size: 11pt;
+        vertical-align: bottom;
+        white-space: nowrap;
+        direction: ltr;
+        padding: 2px 3px 2px 3px;
+    }
+
+    .ritz .waffle .s17 {
+        background-color: #ffffff;
+        text-align: left;
+        color: #000000;
+        font-family: 'docs-Helvetica Neue', Arial;
+        font-size: 8pt;
+        vertical-align: bottom;
+        white-space: nowrap;
+        direction: ltr;
+        padding: 2px 3px 2px 3px;
+    }
+
+    .ritz .waffle .s6 {
+        border-right: none;
+        border-bottom: 2px SOLID #000000;
+        background-color: #ffffff;
+        text-align: left;
+        color: #000000;
+        font-family: 'docs-Helvetica Neue', Arial;
+        font-size: 12pt;
+        vertical-align: bottom;
+        white-space: nowrap;
+        direction: ltr;
+        padding: 2px 3px 2px 3px;
+    }
+
+    .ritz .waffle .s8 {
+        border-right: none;
+        background-color: #ffffff;
+        text-align: left;
+        font-weight: bold;
+        color: #000000;
+        font-family: 'docs-Helvetica Neue', Arial;
+        font-size: 10pt;
+        vertical-align: bottom;
+        white-space: nowrap;
+        direction: ltr;
+        padding: 2px 3px 2px 3px;
+    }
+
+    .ritz .waffle .s3 {
+        border-left: none;
+        border-bottom: 2px SOLID #000000;
+        background-color: #ffffff;
+        text-align: left;
+        color: #000000;
+        font-family: 'docs-Calibri', Arial;
+        font-size: 11pt;
+        vertical-align: bottom;
+        white-space: nowrap;
+        direction: ltr;
+        padding: 2px 3px 2px 3px;
+    }
+
+    .ritz .waffle .s14 {
+        background-color: #ffffff;
+        text-align: left;
+        font-weight: bold;
+        color: #000000;
+        font-family: 'docs-Helvetica Neue', Arial;
+        font-size: 10pt;
+        vertical-align: bottom;
+        white-space: nowrap;
+        direction: ltr;
+        padding: 2px 3px 2px 3px;
+    }
+
+    .ritz .waffle .s12 {
+        border-left: none;
+        background-color: #ffffff;
+        text-align: right;
+        font-weight: bold;
+        color: #000000;
+        font-family: 'docs-Helvetica Neue', Arial;
+        font-size: 10pt;
+        vertical-align: bottom;
+        white-space: nowrap;
+        direction: ltr;
+        padding: 2px 3px 2px 3px;
+    }
+
+    .ritz .waffle .s16 {
+        background-color: #ffffff;
+        text-align: right;
+        font-weight: bold;
+        color: #000000;
+        font-family: 'docs-Helvetica Neue', Arial;
+        font-size: 10pt;
+        vertical-align: bottom;
+        white-space: nowrap;
+        direction: ltr;
+        padding: 2px 3px 2px 3px;
+    }
+
+    .ritz .waffle .s0 {
+        background-color: #ffffff;
+        text-align: left;
+        color: #000000;
+        font-family: 'docs-Calibri', Arial;
+        font-size: 11pt;
+        vertical-align: bottom;
+        white-space: nowrap;
+        direction: ltr;
+        padding: 2px 3px 2px 3px;
+    }
+
+    .ritz .waffle .s10 {
+        border-left: none;
+        background-color: #ffffff;
+        text-align: left;
+        font-weight: bold;
+        color: #000000;
+        font-family: 'docs-Helvetica Neue', Arial;
+        font-size: 10pt;
+        vertical-align: bottom;
+        white-space: nowrap;
+        direction: ltr;
+        padding: 2px 3px 2px 3px;
+    }
+
+    .ritz .waffle .s4 {
+        background-color: #ffffff;
+        text-align: left;
+        color: #000000;
+        font-family: 'docs-Helvetica Neue', Arial;
+        font-size: 12pt;
+        vertical-align: bottom;
+        white-space: nowrap;
+        direction: ltr;
+        padding: 2px 3px 2px 3px;
+    }
+
+    .ritz .waffle .s5 {
+        background-color: #ffffff;
+        text-align: center;
+        font-weight: bold;
+        color: #000000;
+        font-family: 'docs-Calibri', Arial;
+        font-size: 12pt;
+        vertical-align: bottom;
+        white-space: nowrap;
+        direction: ltr;
+        padding: 2px 3px 2px 3px;
+    }
+
+    .ritz .waffle .s11 {
+        background-color: #ffffff;
+        text-align: left;
+        color: #000000;
+        font-family: 'docs-Helvetica Neue', Arial;
+        font-size: 8pt;
+        vertical-align: top;
+        white-space: nowrap;
+        direction: ltr;
+        padding: 2px 3px 2px 3px;
+    }
+
+    .ritz .waffle .s1 {
+        border-right: none;
+        border-bottom: 2px SOLID #000000;
+        background-color: #ffffff;
+        text-align: left;
+        font-weight: bold;
+        color: #000000;
+        font-family: 'docs-Helvetica Neue', Arial;
+        font-size: 14pt;
+        vertical-align: bottom;
+        white-space: nowrap;
+        direction: ltr;
+        padding: 2px 3px 2px 3px;
+    }
+
+    .ritz .waffle .s15 {
+        background-color: #ffffff;
+        text-align: center;
+        font-weight: bold;
+        color: #000000;
+        font-family: 'docs-Helvetica Neue', Arial;
+        font-size: 10pt;
+        vertical-align: bottom;
+        white-space: nowrap;
+        direction: ltr;
+        padding: 2px 3px 2px 3px;
+    }
+
+    .ritz .waffle .s9 {
+        border-left: none;
+        background-color: #ffffff;
+        text-align: left;
+        color: #000000;
+        font-family: 'docs-Calibri', Arial;
+        font-size: 11pt;
+        vertical-align: bottom;
+        white-space: nowrap;
+        direction: ltr;
+        padding: 2px 3px 2px 3px;
+    }
+
+    .ritz .waffle .s13 {
+        border-left: none;
+        background-color: #ffffff;
+        text-align: center;
+        color: #000000;
+        font-family: 'docs-Calibri', Arial;
+        font-size: 11pt;
+        vertical-align: bottom;
+        white-space: nowrap;
+        direction: ltr;
+        padding: 2px 3px 2px 3px;
+    }
+
+    .ritz .waffle .s18 {
+        background-color: #ffffff;
+        text-align: center;
+        color: #000000;
+        font-family: 'docs-Helvetica Neue', Arial;
+        font-size: 10pt;
+        vertical-align: bottom;
+        white-space: nowrap;
+        direction: ltr;
+        padding: 2px 3px 2px 3px;
+    }
+
+    .details-container, .details-table {
+        color: #000000;
+    }
+    /* .table-container {
+        width: 200mm;
+        max-width: 200mm;
+    } */
+
+    .table-container td {
+        height: 20px;
+    }
+
+    .top-table-divider {
+        border-top: 2px solid black; /* Color y tipo de línea */
+    }
+    .bottom-table-divider {
+        border-bottom: 2px solid black; /* Color y tipo de línea */
+    }
+    
+    .td-left {
+        width: 400px;
+    }
+    .td-center {
+        width: 100px;
+    }
+    .td-right {
+        width: 50px;
+    }
+    @media print {
+        /* Establecer todos los márgenes a cero para la página */
+        @page {
+          margin: 0;
+          size: A4 landscape !important;
+        }
+      
+        /* Opcionalmente, puedes establecer el padding del body a cero para asegurarte */
+        body {
+          padding: 0;
+          margin: 0;
+        }
+        .td-left {
+            width: 400px;
+        }
+        .td-center {
+            width: 100px;
+        }
+        .td-right {
+            width: 50px;
+        }
+      }
+      
