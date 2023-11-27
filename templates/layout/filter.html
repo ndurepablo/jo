@@ -55,10 +55,10 @@
         ventanaDocument.body.innerHTML = tempDiv.innerHTML; // Escribir el contenido en el body
   
         // Esperar un corto tiempo antes de imprimir para asegurarse de que los estilos se apliquen
-        //setTimeout(() => {
-          //ventanaImpresion.print();
-          //ventanaImpresion.close();
-        //}, 500); // Tiempo de espera (puedes ajustarlo según sea necesario)
+        setTimeout(() => {
+          ventanaImpresion.print();
+          ventanaImpresion.close();
+        }, 500); // Tiempo de espera (puedes ajustarlo según sea necesario)
       };
   
       document.head.appendChild(styles2); // Agregar los estilos al head para cargarlos
