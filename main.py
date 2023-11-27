@@ -37,27 +37,22 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+def register(username, password):
+    app_context = app.app_context()
+    app_context.push()
 
-        existing_user = User.query.filter_by(username=username).first()
-        if existing_user:
-            flash('El nombre de usuario ya está en uso. Por favor, elige otro.', 'error')
-            return redirect(url_for('register'))
+    existing_user = User.query.filter_by(username=username).first()
+    if existing_user:
+        print('El nombre de usuario ya está en uso. Por favor, elige otro.', 'error')
 
-        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
-        new_user = User(username=username, password=hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
+    new_user = User(username=username, password=hashed_password)
+    db.session.add(new_user)
+    db.session.commit()
+    app_context.pop()
 
-        flash('Registro exitoso. Ahora puedes iniciar sesión.', 'success')
-        return redirect(url_for('login'))
-
-    return render_template('register.html')
+    return new_user
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
