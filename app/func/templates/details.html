@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %} Detalles {% endblock %}
+
+{% block stylesheet %} {% endblock %}
+{% block content %}
+{% include 'layout/filter.html' %}
+{% include 'base_details.html' %}
+{% if orders %}
+<div class="details-container row mb-1 ml-4 mr-4 justify-content-center">
+
+    {% for order in orders %}
+    <div class="table-container col-md-6 mb-1">
+        <table class="details-table border border-dark">
+            <tbody>
+                <tr>
+                    <td class="td-left"><b>DETALLE DEL ENVÍO {{order.custom_shipping_date}}</b></td>
+                    <td class="td-center"></td>
+                    <td class="td-right"><img src="../static/img/jardin-organico.png" alt=""></td>
+                </tr>
+                <tr class="top-table-divider">
+                    <td class="td-left">{{order.name}} (NUMERO TEL)</td>
+                    <td class="td-center"></td>
+                    <td class="td-right"><b>ORDEN #{{order.id}}</b></td>
+                </tr>
+                <tr class="bottom-table-divider">
+                    <td class="td-left">{{order.adress}} / BARRIO / {{order.city}} {{order.cp}}</td>
+                    <td class="td-center"></td>
+                    <td class="td-right"></td>
+                </tr>
+                <tr>
+                    <td class="td-left"></td>
+                    <td class="td-center"></td>
+                    <td class="td-right">Precio del pedido: ${{order.total}} (traer orden)</td>
+                </tr>
+                <tr>
+                    <td class="td-left"></td>
+                    <td class="td-center"></td>
+                    <td class="td-right">Envío: ${{order.shipping_total}}</td>
+                </tr>
+                <tr>
+                    <td class="td-left"><b>Comentarios: {{ order.notes if order.notes else 'sin comentarios' }}</b></td>
+                    <td class="td-center"></td>
+                    <td class="td-right"><b>${{order.total}}</b></td>
+                </tr>
+                <tr>
+                    <td class="td-left">Abona por transferencia</td>
+                    <td class="td-center"></td>
+                    <td class="td-right"></td>
+                </tr>
+                <tr>
+                    <td class="td-left"><b>Cantidad de productos:</b></td>
+                    <td class="td-center">{{order.total_products}}</td>
+                    <td class="td-right"></td>
+                </tr>
+                <tr>
+                    <td class="td-left"><b>Producto</b></td>
+                    <td class="td-center"><b>Cantidad</b></td>
+                    <td class="td-right"><b>Importe</b></td>
+                </tr>
+                {% for product in order.products %}
+                <tr>
+                    <td class="td-left">{{ product['name'] }}</td>
+                    <td class="td-center">{{ product['quantity'] }}</td>
+                    <td class="td-right">{{ product['total_product'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

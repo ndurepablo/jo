@@ -1,0 +1,31 @@
+{% extends "base.html" %} 
+{% block title %}Cargar producto{% endblock %} 
+{% block content%}
+<form action="/crear_producto" method="post">
+    <label for="name">Nombre del Producto:</label><br>
+    <input type="text" id="name" name="name" value="Premium Quality"><br><br>
+
+    <label for="regular_price">Precio Regular:</label><br>
+    <input type="text" id="regular_price" name="regular_price" value="21.99"><br><br>
+
+    <label for="description">Descripción:</label><br>
+    <textarea id="description" name="description" rows="4" cols="50">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</textarea><br><br>
+
+    <label for="short_description">Descripción Corta:</label><br>
+    <textarea id="short_description" name="short_description" rows="2" cols="50">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</textarea><br><br>
+
+    <label for="category1">Categoría 1:</label><br>
+    <input type="text" id="category1" name="category1" value="9"><br><br>
+
+    <label for="category2">Categoría 2:</label><br>
+    <input type="text" id="category2" name="category2" value="14"><br><br>
+
+    <label for="image1">Imagen 1:</label><br>
+    <input type="text" id="image1" name="image1" value="http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/T_2_front.jpg"><br><br>
+
+    <label for="image2">Imagen 2:</label><br>
+    <input type="text" id="image2" name="image2" value="http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/T_2_back.jpg"><br><br>
+
+    <input type="submit" value="Crear Producto">
+</form>
+{% endblock %}
