@@ -2,108 +2,71 @@ import os
 
 from dotenv import load_dotenv
 
-from functools import wraps
+from flask import Flask, render_template, g
 
-from flask import Flask, render_template, request, redirect, url_for, flash, session, g
 import jinja2.exceptions
 
-from flask_sqlalchemy import SQLAlchemy
-from flask_bcrypt import Bcrypt
+from flask_migrate import Migrate
+
+from models.user import db, User
+
+from app.auth.auth import auth_bp
+from app.general.index import index_bp
+from app.func.func import func_bp
 
 
-from app.utils.service import get_category, get_details, get_orders, get_tickets
+from app.auth.service import get_user_data
+
+from app.auth.auth import bcrypt
+from app.auth.service import login_required
+
+import click
 
 load_dotenv()
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+
+db_user = os.getenv('DB_USERNAME')
+db_pass = os.getenv('DB_ROOT_PASSWORD')
+db_host = os.getenv('DB_SERVICE')
+db_name = os.getenv('DB_NAME')
+# Conexión a la base de datos MySQL
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{db_user}:{db_pass}@{db_host}/{db_name}'
+
+# 'mysql+pymysql://usuario:contraseña@nombre_del_servicio_db/nombre_de_la_base_de_datos'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
-db = SQLAlchemy(app)
-bcrypt = Bcrypt(app)
+db.init_app(app)
+bcrypt.init_app(app)
+migrate = Migrate(app, db)
 
-
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
-
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'logged_in' not in session:
-            return redirect(url_for('login'))
-        return f(*args, **kwargs)
-    return decorated_function
-
-def register(username, password):
-    app_context = app.app_context()
-    app_context.push()
-
-    existing_user = User.query.filter_by(username=username).first()
-    if existing_user:
-        print('El nombre de usuario ya está en uso. Por favor, elige otro.', 'error')
-
+@app.cli.command("create-user")
+@click.option("--username", prompt="Enter username", help="Username for the superuser")
+@click.option("--email", prompt="Enter email", help="Email for the superuser")
+@click.option("--password", prompt="Enter password", hide_input=True, confirmation_prompt=True, help="Password for the superuser")
+@click.option("--first-name", prompt="Enter first name", help="First name for the superuser")
+@click.option("--last-name", prompt="Enter last name", help="Last name for the superuser")
+@click.option("--is-admin", prompt="Is admin? (y/n)", type=click.BOOL, default=False, help="Is the user an admin?")
+def createsuperuser(username, email, password, first_name, last_name, is_admin):
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-
-    new_user = User(username=username, password=hashed_password)
-    db.session.add(new_user)
-    db.session.commit()
-    app_context.pop()
-
-    return new_user
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if 'logged_in' in session:
-        return redirect(url_for('index'))
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        user = User.query.filter_by(username=username).first()
-
-        if user and bcrypt.check_password_hash(user.password, password):
-            session['logged_in'] = True
-            session['username'] = username
-            flash('¡Inicio de sesión exitoso!', 'success')
-            return redirect(url_for('index'))
-        else:
-            flash('Credenciales incorrectas. Por favor, inténtalo de nuevo.', 'error')
-
-    return render_template('login.html')
-
-@app.route('/logout')
-def logout():
-    # Limpiar la sesión
-    session.clear()
-    # Redirigir a la página de inicio de sesión o a cualquier otra página después del logout
-    return redirect(url_for('login'))  # Reemplaza 'login' con la ruta correcta si es diferente
-
-# Obtener los datos del usuario
-def get_user_data():
-    # Lógica para obtener los datos del usuario, desde la sesión o una base de datos
-    if 'username' in session:
-        return {'username': session['username']}
-    return None
-
-# Decorador para cargar los datos del usuario antes de cada request
-@app.before_request
-def load_user_data():
-    g.user = get_user_data()
-
-@app.route('/')
-@app.route('/index')
-@login_required
-def index():
-    return render_template('index.html')
-
-
-@app.route('/<pagename>')
-@login_required
-def admin(pagename):
-    return render_template(pagename+'.html')
+    """Create a superuser"""
+    try:
+        user = User(
+            username=username,
+            email=email,
+            password=hashed_password,
+            first_name=first_name,
+            last_name=last_name,
+            is_admin=is_admin,
+        )
+        db.session.add(user)
+        db.session.commit()
+        click.echo("Superuser created successfully")
+    except Exception as e:
+        db.session.rollback()
+        click.echo(f"Failed to create superuser: {str(e)}")
 
 @app.errorhandler(jinja2.exceptions.TemplateNotFound)
 @login_required
@@ -115,115 +78,17 @@ def template_not_found(e):
 def not_found(e):
     return render_template('404.html')
 
-def check_submit_button(submit_button):
-    return submit_button.lower() == 'buscar'
+# Decorador para cargar los datos del usuario antes de cada request
+@app.before_request
+def load_user_data():
+    g.user = get_user_data()
 
-@app.route('/orders/', methods=['GET', 'POST'])
-@login_required
-def orders_completed():
-
-    page = int(request.args.get("page", 1))
-    after = request.args.get('after')
-    before = request.args.get('before')
-    submit_button = request.args.get('submit_button')
-
-    dateType = request.args.get('dateType')
-
-    orders = None
-    total_pages = None
-    delivery_date = None
-
-    if submit_button and check_submit_button(submit_button):
-        if after:
-            orders, total_pages = get_orders(date_type='delivery', after=after)
-
-    return render_template('orders.html', orders = orders, total_pages = total_pages, page = page)
-
-
-@app.route('/tickets/', methods=['GET', 'POST'])
-@login_required
-def tickets_delivery():
-
-    after = request.args.get('after')
-    before = request.args.get('before')
-    submit_button = request.args.get('submit_button')
-
-    dateType = request.args.get('dateType')
-
-    orders = None
-    total_pages = None
-    delivery_date = None
-
-    if submit_button and check_submit_button(submit_button):
-        if after:
-            orders, total_pages = get_details(date_type='delivery', after=after)
-
-    return render_template('tickets.html', orders=orders, total_pages=total_pages)
-
-@app.route('/details/')
-@login_required
-def orders_details():
-
-    after = request.args.get('after')
-    before = request.args.get('before')
-    submit_button = request.args.get('submit_button')
-
-    dateType = request.args.get('dateType')
-
-    orders = None
-    total_pages = None
-    delivery_date = None
-
-    if submit_button and check_submit_button(submit_button):
-        if after:
-            orders, total_pages = get_details(date_type='delivery', after=after)
-
-    return render_template('details.html', orders=orders)
-
-@app.route('/category/')
-@login_required
-def category():
-    category = request.args.get('category')
-    after = request.args.get('after')
-    before = request.args.get('before')
-    submit_button = request.args.get('submit_button')
-
-    dateType = request.args.get('dateType')
-
-    orders = None
-    total_pages = None
-    delivery_date = None
-
-    if submit_button and check_submit_button(submit_button):
-        if after:
-            orders, total_pages = get_category(date_type='period', after=after, before=before, category=category)
-    # Procesa los datos para la tabla
-    table_data = []
-    headers = set() # Usaremos un conjunto para recopilar todos los nombres de usuario únicos
-    if orders:
-            for order in orders:
-                product_name = order['name']
-                total_quantity = order['total_quantity']
-                user_data = order['users']
-
-                # Agrega los nombres de usuario a los encabezados
-                headers.update(user_data.keys())
-
-                # Creamos una fila para la tabla con los valores que necesitas
-                row = {
-                    'product_name': product_name,
-                    'total_quantity': total_quantity,
-                    **user_data  # Desempaqueta todos los usuarios y sus cantidades
-                }
-                table_data.append(row)
-
-            # Convierte los encabezados a una lista para ordenarlos
-            headers = sorted(list(headers))
-
-
-    return render_template('category.html', table_data=table_data, headers=headers)
+app.register_blueprint(auth_bp)
+app.register_blueprint(index_bp)
+app.register_blueprint(func_bp)
 
 with app.app_context():
     db.create_all()
+
 if __name__ == '__main__':
     app.run(debug=False)

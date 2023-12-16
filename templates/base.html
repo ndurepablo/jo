@@ -35,7 +35,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url_for('index') }}">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url_for('index_bp.index') }}">
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-laugh-wink"></i>
         </div>
@@ -47,7 +47,7 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('index') }}">
+        <a class="nav-link" href="{{ url_for('index_bp.index') }}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -97,54 +97,47 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Addons
+        Envíos
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Páginas</span>
+          <i class="fas fa-fw fa-table"></i>
+          <span>Contenido</span>
         </a>
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Macro:</h6>
-            <a class="collapse-item" href="{{ url_for('category') }}">Categorías</a>
-            <a class="collapse-item" href="{{ url_for('orders_details') }}">Detalles</a>
-            <a class="collapse-item" href="{{ url_for('tickets_delivery') }}">Etiquetas</a>
-            <a class="collapse-item" href="{{ url_for('orders_completed') }}">Pedidos</a>
-            <!-- <a class="collapse-item" href="register">Register</a>
-            <a class="collapse-item" href="forgot-password">Forgot Password</a>
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Other Pages:</h6>
-            <a class="collapse-item" href="404">404 Page</a>
-            <a class="collapse-item" href="blank">Blank Page</a> -->
+            <a class="collapse-item" href="{{ url_for('func_bp.category') }}">Categorías</a>
+            <a class="collapse-item" href="{{ url_for('func_bp.orders_details') }}">Detalles</a>
+            <a class="collapse-item" href="{{ url_for('func_bp.tickets_delivery') }}">Etiquetas</a>
+            <a class="collapse-item" href="{{ url_for('func_bp.orders_completed') }}">Pedidos</a>
           </div>
         </div>
       </li>
 
-      <!-- Nav Item - Charts -->
-      <!-- <li class="nav-item">
-        <a class="nav-link" href="charts">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Charts</span></a>
-      </li> -->
-
-      <!-- Nav Item - Tables -->
-      <!-- <li class="nav-item">
-        <a class="nav-link" href="tables">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Tables</span></a>
-      </li> -->
-
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
+      <!-- Nav Item - Charts -->
 
-      <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-      </div>
+      <!-- TEMPALTE -->
 
+      <li class="nav-item">
+        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapsePages">
+          <i class="fas fa-fw fa-upload"></i>
+          <span>Cargar producto</span></a>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Macro:</h6>
+            <a class="collapse-item" href="{{ url_for('func_bp.product_create') }}">Crear producto</a>
+          </div>
+        </div>
+      </li>
+
+      <!-- FINAL TEMPLATE -->
+      
     </ul>
     <!-- End of Sidebar -->
 
@@ -210,7 +203,7 @@
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
              
-                <a class="dropdown-item" href="{{ url_for('logout') }}" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item" href="{{ url_for('auth_bp.logout') }}" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                   Logout
               </a>
@@ -271,7 +264,7 @@
         <div class="modal-body">Seleccionar "Salir" si queres finalizar la sesión.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="{{url_for('logout')}}">Logout</a>
+          <a class="btn btn-primary" href="{{url_for('auth_bp.logout')}}">Logout</a>
         </div>
       </div>
     </div>
